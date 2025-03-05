@@ -1,0 +1,35 @@
+-- a. FROM komutuyla seçtiğimiz tablodan SELECT komutuyla istenen kolonları seçiyoruz.
+SELECT FirstName, LastName, Salary
+FROM Employees;
+
+-- b. SELECT komutuyla beraber DISTINCT komutu kullanarak istediğimiz kolondaki değerleri tekrara düşmeden görebiliriz.
+
+SELECT DISTINCT departmentname
+FROM departments;
+
+-- c. WHERE komutu kullanarak istediğimiz kolonda filtreleme yapabiliriz. İlk önce IT sektör id sini bulup ardından employees tablosundan filtreleme yapacağız.
+
+SELECT *
+FROM departments
+WHERE departmentname = 'IT';
+
+-- IT sektörünün ıd si 1. Şimdi filtreleme yapalım.
+
+SELECT *
+FROM employees
+WHERE departmentid = 1;
+
+-- d. ORDER BY komutu ile seçtiğimiz bir kolonu küçükten büyüğe ya da büyükten küçüğe sıralayabiliriz.
+-- ORDER BY komutu default olarak ASC formatında çalışır yani artan sırada 
+-- Büyükten küçüğe görmek için DESC kullanarak en başta en büyük değeri sonra azalarak ilerleyen değerleri elde edeceğiz
+
+SELECT * 
+FROM employees
+ORDER BY salary DESC;
+
+
+-- e. || sembolü ile kolon birleştirme yapabiliriz
+-- Alies kullanarak yani AS komutu ile yeni kolonumuzu isimlendiririz
+
+SELECT firstname || ' ' || lastname AS full_name
+FROM employees
