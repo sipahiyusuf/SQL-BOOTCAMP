@@ -1,0 +1,51 @@
+-- COUNT fonksiyonu ile toplam satır sayyısını toplarız. * işareti ise tüm kolonları seçmemizi sağlar. 
+-- COUNT(*) yazdığımızda gereken koşulları sağlayan tüm kolonlardaki tüm satırları toplarız.
+-- WHERE komutu ile gereken koşulları yazarız. 
+-- IS NULL fonksiyonunu bir çeşit boolean (true/false) fonksiyonu gibi düşünebiliriz.
+-- Eğer o satırda null değeri yani boş komut varsa true değeri verir yani doğru değeri verir ve IS NULL fonksiyonu doğru olur.
+-- Sonuç olarak WHERE ile yapmış olduğumuz koşul sağlanmıştır.
+-- Koşulları sağlayan satırların toplamını elde edebiliriz.
+ 
+
+SELECT COUNT(*)
+FROM Invoice
+WHERE invoice_id IS NULL
+  AND customer_id IS NULL
+  AND invoice_date IS NULL
+  AND billing_address IS NULL
+  AND billing_city IS NULL
+  AND billing_state IS NULL
+  AND billing_country IS NULL
+  AND billingpostal_code IS NULL
+  AND total IS NULL;
+
+-- Toplam satır sayısı: 1
+-- count değerimiz 0
+
+
+
+-- Kıyaslama yapmak için total ve DoubleTotal sütünlarımızı beraber seçiyoruz.
+-- AS komutu ile alias işlemi yapıyoruz ve total*2 değerlerimizi DoubleTotal isimli bir kolona kaydediyoruz.
+-- ORDER BY komutu ile sıralama işlemleri yapıyoruz. 
+-- Büyükten küçüğe sıralamak için azalan anlamına gelen descending manasındaki DESC komutunu ORDER BY ile kullanıyoruz
+
+
+SELECT invoice_id, total, total * 2 AS DoubleTotal
+FROM Invoice
+ORDER BY DoubleTotal DESC;
+
+
+
+-- String işlemlerinde seçilen string değerinin belirtilen kısmını seçmek için LEFT RIGHT komutlarını kullanabiliriz.
+-- LEFT(kolon_adı, integer) şeklinde yazılan komutumuz seçilen kolondaki string değerinin sol tarafından başlayarak integer değeri kadar karakteri seçer
+-- RIGHT(kolon_adı, integer) şeklinde yazılan komutumuz seçilen kolondaki string değerinin sağ tarafından başlayarak integer değeri kadar karakteri seçer
+-- WHERE ile koşullama yapıyorduk.
+-- Burada tarihler üzerinden koşullama yapmak istiyoruz. 
+-- EXTRACT ile seçtiğimiz kolondaki tarih değerinin istediğimiz kısmını (yıl, ay, gün) seçiyoruz ve istediğimiz değere eşit olması durumunda koşulumuzun sağlanmasını istiyoruz
+
+
+
+SELECT LEFT(billing_address, 3) || RIGHT(billing_address, 4) AS AcikAdres
+FROM Invoice
+WHERE EXTRACT(YEAR FROM invoice_date) = 2013
+  AND EXTRACT(MONTH FROM invoice_date) = 8;
