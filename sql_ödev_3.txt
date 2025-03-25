@@ -1,0 +1,34 @@
+-- WHERE komutu ve EXTRACT komutu ile ülke ve tarih üzerinde koşuular oluşturuyoruz
+-- total kolonundaki değerleri toplamak için SUM fonksiyonunu kullanıyor ve alias kullanarak bu değerleri total_bill kolonuna yazdırıyoruz
+
+SELECT SUM(total) AS total_bill
+FROM invoice
+WHERE billing_country = 'USA' AND EXTRACT(YEAR FROM invoice_date) = 2009;
+
+-- track tablosundaki verilerimize ait diğer tablolarda bulunan farklı bilgileri de kullanarak bir sorgulama gerçekleştireceğiz.
+-- Ödev dosyasında verilen şemayı kullanarak farklı tablolarımızı join işlemi ile ortak kolonlarda birleştiriyoruz
+-- track_id verilerini kullanarak track tablosundaki verileri playlisttrack tablosundaki verilerle eşleştiriyoruz
+-- playlisttrack tablosunu da playlist tablosuyla eşleştiriyoruz
+-- bu sayede track dosyası ile playlist tablosunu birleştiriyoruz.
+
+SELECT track.track_id, track.name AS track_name, playlist.name AS playlist_name
+FROM track
+JOIN playlisttrack ON track.track_id = playlisttrack.track_id
+JOIN playlist ON playlisttrack.playlist_id = playlist.playlist_id;
+
+
+
+-- track tablosundaki album_id kolonu ile album tablosundaki album_id değerleri ortak
+-- album_id tablosundaki artist_id değerleri ile artist tablosundaki artist_id değerleri ortak
+-- ortak kolonları kullanarak track, artist, album tablolarını birleştiriyoruz
+-- WHERE komutu ile sadece istediğimiz albümdeki parçalar olacak şekilde koşul oluşturuyoruz
+-- ORDER BY komutu ile şarkı süresine bağlı büyükten küçüğe yani azalan bir sıralama oluşturuyoruz
+
+
+SELECT track.name AS track_name, artist.name AS artist_name, track.milliseconds
+FROM track
+JOIN album ON track.album_id = album.album_id
+JOIN artist ON album.artist_id = artist.artist_id
+WHERE album.title = 'Let There Be Rock'
+ORDER BY track.milliseconds DESC;
+
